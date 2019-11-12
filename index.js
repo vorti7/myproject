@@ -4,7 +4,6 @@ import Screen from './src/screen'
 
 Screen.registerComponent()
 
-
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setRoot({
     root: {
