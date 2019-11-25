@@ -2,7 +2,11 @@ import React from 'react'
 import { Navigation } from 'react-native-navigation'
 import StartApp from './startApp'
 import Chatbot from './chatbot'
+import Chat from './chat'
 import Calendar from './calendar'
+import DateTimePicker from './datetimePicker'
+import Test from './test'
+import LoadingChat from './loadingChat'
 
 // import ApolloClient from 'apollo-boost'
 // import { ApolloProvider } from '@apollo/react-hooks';
@@ -23,6 +27,10 @@ export default Screen = {
     registerComponent(){
         Navigation.registerComponent('startAppScreen', () => StartApp)
         Navigation.registerComponent('chatbotScreen', () => Chatbot)
+        Navigation.registerComponent('chatScreen', () => Chat)
         Navigation.registerComponent('calendarScreen', () => Calendar)
+        Navigation.registerComponent('dateTimePickerScreen', () => DateTimePicker)
+        Navigation.registerComponent('loadingChatScreen', () => LoadingChat)
+        Navigation.registerComponent('testScreen', () => Test)
     }
 }
