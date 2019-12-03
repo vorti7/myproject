@@ -11,7 +11,15 @@ export default (props) => {
     goChatbot = () => {
       Navigation.push(props.componentId, {
         component: {
-          name:'chatbotScreen'
+          name:'chatBotScreen'
+        }
+      })
+    }
+
+    goSingleChatbot = () => {
+      Navigation.push(props.componentId, {
+        component: {
+          name:'singleChatBotScreen'
         }
       })
     }
@@ -61,6 +69,10 @@ export default (props) => {
           <Button
             title="go Chatbot"
             onPress={() => goChatbot()}
+          />
+          <Button
+            title="go SingleChatbot"
+            onPress={() => goSingleChatbot()}
           />
           <Button
             title="go Chat"

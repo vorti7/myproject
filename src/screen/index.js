@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigation } from 'react-native-navigation'
 import StartApp from './startApp'
 import Chatbot from './chatbot'
+import SingleChatbot from './singleChatbot'
 import Chat from './chat'
 import Calendar from './calendar'
 import DateTimePicker from './datetimePicker'
@@ -26,7 +27,8 @@ import LoadingChat from './loadingChat'
 export default Screen = {
     registerComponent(){
         Navigation.registerComponent('startAppScreen', () => StartApp)
-        Navigation.registerComponent('chatbotScreen', () => Chatbot)
+        Navigation.registerComponent('chatBotScreen', () => Chatbot)
+        Navigation.registerComponent('singleChatBotScreen', () => SingleChatbot)
         Navigation.registerComponent('chatScreen', () => Chat)
         Navigation.registerComponent('calendarScreen', () => Calendar)
         Navigation.registerComponent('dateTimePickerScreen', () => DateTimePicker)

@@ -1,19 +1,19 @@
 import React, { useState,
-                useCallback,
-                useEffect,
-                useRef
-            } from 'react';
+    useCallback,
+    useEffect,
+    useRef
+} from 'react';
 import {
-    Platform,
-    View,
-    Button,
-    FlatList,
-    Text,
-    TextInput,
-    Picker,
-    TouchableOpacity,
-    Alert,
-    Animated
+Platform,
+View,
+Button,
+FlatList,
+Text,
+TextInput,
+Picker,
+TouchableOpacity,
+Alert,
+Animated
 } from 'react-native';
 
 import LoadingChat from './loadingChat'
@@ -23,36 +23,24 @@ import LoadingChat from './loadingChat'
 const qList = [
     {
         question : [
-            'question : 00',
-            'Hello,',
-            'This is first question.',
-            "What's your name?",
+            "question : 00\nHello, This is first question.\nWhat's your name?",
         ],
         answerType : 0,
         nextQuestion : 1
     },
     {
-        question : [
-            'question : 01',
-            'Where do you wanna go?',
-        ],
+        question : 'question : 01\nWhere do you wanna go?',
         answerType : 1,
         select: ['aa', 'bb', 'cc', 'no'],
         nextQuestion : [2, 2, 2, 3]
     },
     {
-        question : [
-            'question : 02',
-            'Put extra Location Information.',
-        ],
+        question : 'question : 02\nPut extra Location Information.',
         answerType : 0,
         nextQuestion : 3
     },
     {
-        question : [
-            'question : 03',
-            'When do you wanna go?',
-        ],
+        question : 'question : 03\nWhen do you wanna go?',
         answerType : 2,
         nextQuestion : -1
     }
@@ -80,7 +68,8 @@ export default () => {
 
     if (!answerBoxTrigger && !loadingTrigger) {
         console.log('question Input')
-        setChatList(chatList.concat([{type:'q', qIndex:question, chats: qList[question].question}]))
+        // setChatList(chatList.pop()) // setState used twice how to solve?
+        setChatList(chatList.concat([{type:'q', qIndex:question, chat: qList[question].question}]))
         setAnswerBoxTrigger(true)
         setLoadingTrigger(true)
     }
@@ -89,34 +78,34 @@ export default () => {
         if(index == 0){
             Animated.timing(
                 animValue,
-              {
+            {
                 toValue: 0,
                 duration: 1000,
-              }
+            }
             ).start();
         }else if(index == 1){
             Animated.timing(
                 animValue,
-              {
+            {
                 toValue: 0.5,
                 duration: 1000,
-              }
+            }
             ).start();
         }else if(index == 2){
             Animated.timing(
                 animValue,
-              {
+            {
                 toValue: 1,
                 duration: 1000,
-              }
+            }
             ).start();
-
         }
     }
 
     answerInput = (answerData) => {
         console.log('answer Input')
-        setChatList(chatList.concat([{type:'a', qIndex:question, chats:[answerData.answer]}]))
+        // setChatList(chatList.pop())
+        setChatList(chatList.concat([{type:'a', qIndex:question, chat:answerData.answer}]))
         setQuestion(answerData.nextQuestion)
         setAnswerBoxTrigger(false)
         setTimeout(()=>{
@@ -133,15 +122,15 @@ export default () => {
             'Fix answer',
             'Do you want to fix this answer?',
             [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {text: 'OK', onPress: () => {
-                  setChatList(chatList.slice(0,index))
-                  setQuestion(chatList[index-1].qIndex)
-              }},
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'OK', onPress: () => {
+                    setChatList(chatList.slice(0,index))
+                    setQuestion(chatList[index-1].qIndex)
+                }},
             ]
         )
     }
@@ -191,55 +180,88 @@ function AChat(props){
     chatColor = 'white'
     chatPosition = ''
     chatTouchable = true
-    startAnimPosition = 0
-    if (props.data.type=='q'){
+    if (props.data.type=='q' || props.data.type == 'loadingQ'){
         chatColor = 'red'
         chatPosition = 'flex-start'
-        // startAnimPosition = -1000
-    }else if(props.data.type == 'a'){
+    }else if(props.data.type == 'a' || props.data.type == 'loadingA'){
         chatColor = 'blue'
         chatPosition = 'flex-end'
         chatTouchable = false
-        // startAnimPosition = 1000
     }
 
-    const [animValue] = useState(new Animated.Value(startAnimPosition))
+    const [animValue] = useState(new Animated.Value(0))
     useEffect(() => {
+        console.log(props.data)
+        console.log('Val : ',animValue)
         Animated.timing(
             animValue,
-          {
-            toValue: 1,
-            duration: 1000,
-          }
+            {
+                toValue: 1,
+                duration: 1000,
+            }
         ).start();
-      }, [])
+    }, [])
 
-    return(
-        <View>
-            {props.data.chats.map((contact, i) => {
-                return(
+
+    // const chatWidth = animValue.interpolate({
+    //     inputRange: [0, 0.5, 1],
+    //     outputRange: [0, 60, 120]
+    // })
+    const chatText = animValue.interpolate({
+        inputRange: [0, 0.5, 1],
+        outputRange: [0, 10, 20]
+    })
+    if(props.data.type == 'q' || props.data.type == 'a'){
+        return(
+            <View>
+                <View
+                    style={{width:'100%', padding:5, alignItems:chatPosition}}
+                >
                     <Animated.View style={{
                         opacity: animValue,
                         // left: animValue
+                        minHeight:40,
+                        // minWidth: chatWidth,
+                        minWidth: 60,
+                        maxWidth:'70%',
+                        padding:10,
+                        backgroundColor:chatColor,
+                        borderRadius:5,
+                        justifyContent:'center'
                     }}>
-                        <View
-                            key = {i}
-                            style={{width:'100%', padding:5, alignItems:chatPosition}}
+                        <TouchableOpacity
+                            disabled={chatTouchable}
+                            onPress = {() => props.fixAnswer()}
                         >
-                            <View style={{minHeight:40, minWidth:60, maxWidth:'70%', padding:10, backgroundColor:chatColor, borderRadius:5, justifyContent:'center'}}>
-                                <TouchableOpacity
-                                    disabled={chatTouchable}
-                                    onPress = {() => props.fixAnswer()}
-                                >
-                                    <Text style={{color:'white'}}>{contact}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                            {/* <Text style={{color:'white'}}>{props.data.chat}</Text> */}
+                            <Animated.Text style = {{fontSize:chatText}}>{props.data.chat}</Animated.Text>
+                        </TouchableOpacity>
                     </Animated.View>
-                )
-            })}
-        </View>
-    )
+                </View>
+            </View>
+        )
+    }else if (props.data.type == 'loadingQ' || props.data.type == 'loadingA'){
+        console.log('Val : ',animValue)
+        return(
+            <Animated.View style={{
+                opacity: animValue,
+                // left: animValue
+            }}>
+                <View
+                    style={{width:'100%', padding:5, alignItems:chatPosition}}
+                >
+                    <View style={{minHeight:40, minWidth:60, maxWidth:'70%', padding:10, backgroundColor:chatColor, borderRadius:5, justifyContent:'center'}}>
+                        <LoadingChat/>
+                    </View>
+                </View>
+            </Animated.View>
+        )
+    }else{
+        return (
+            <View></View>
+        )
+    }
+
 }
 
 function InputContainer(props){
@@ -247,7 +269,6 @@ function InputContainer(props){
     // const [ pickerValue, setPickerValue ] = useState('')
 
     inputBox = () => {
-
         if(props.data.answerType<0 || !props.showTrigger){
             return <View></View>
         }else if(props.data.answerType==0){
@@ -309,15 +330,15 @@ function InputContainer(props){
         }
     }
     return(
-        <View style={{width:'100%', borderColor:'black', bodrderWidth:1}}>
-            <View
-                style={{width:'100%', padding:'1%'}}
-            >
-                {inputBox()}
-            </View>
-            <View
-                style={{height:Platform.OS === 'ios' ? '2%' : 0}}
-            />
+    <View style={{width:'100%', borderColor:'black', bodrderWidth:1}}>
+        <View
+            style={{width:'100%', padding:'1%'}}
+        >
+            {inputBox()}
         </View>
+        <View
+            style={{height:Platform.OS === 'ios' ? '2%' : 0}}
+        />
+    </View>
     )
 }
