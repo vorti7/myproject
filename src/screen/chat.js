@@ -67,7 +67,7 @@ function AChat(props){
         <View
             style={{width:'100%', padding:5, alignItems:chatPosition}}
         >
-            <View style={{minHeight:40, minWidth:60, padding:10, backgroundColor:chatColor, borderRadius:5, justifyContent:'center'}}>
+            <View style={{minHeight:40, minWidth:60, maxWidth:'70%', padding:10, backgroundColor:chatColor, borderRadius:5, justifyContent:'center'}}>
                     <Text style={{color:'white'}}>{props.data.chat}</Text>
             </View>
         </View>

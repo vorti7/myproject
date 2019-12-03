@@ -6,6 +6,7 @@ import {
     Alert
   } from 'react-native';
   import { Navigation } from "react-native-navigation";
+  import LoadingChat from './loadingChat'
 
 export default (props) => {
     return(

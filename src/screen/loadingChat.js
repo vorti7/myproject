@@ -3,7 +3,8 @@ import {
     View,
     Button,
     Text,
-    Alert
+    Alert,
+    Animated
   } from 'react-native';
   import { Navigation } from "react-native-navigation";
 
@@ -13,13 +14,13 @@ export default (props) => {
     useEffect(() => {
         dotChange()
         return () => {
-            console.log('turn off!')
+            // console.log('loadingChat off!')
             clearTimeout(timer)
         }
       }, []);
 
     dotChange = () => {
-        console.log(dotCount)
+        // console.log(dotCount)
         if (dotCount<3){
             setDotCount(dotCount + 1)
         }else{
@@ -31,7 +32,7 @@ export default (props) => {
     }
 
     return(
-        <View style={{backgroundColor:'green', borderRadius:20, justifyContent:'center', alignItems:'center'}}>
+        <View style={{borderRadius:20, justifyContent:'center', alignItems:'center'}}>
             <Text style={{fontSize:10, color:'white', fontWeight:'bold'}}>{' ● ' .repeat(dotCount)}</Text>
         </View>
     )
