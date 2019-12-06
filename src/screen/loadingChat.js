@@ -33,7 +33,7 @@ export default (props) => {
 
     return(
         <View style={{borderRadius:20, justifyContent:'center', alignItems:'center'}}>
-            <Text style={{fontSize:10, color:'white', fontWeight:'bold'}}>{' ● ' .repeat(dotCount)}</Text>
+            <Text style={{fontSize:10, fontWeight:'bold'}}>{' ● ' .repeat(dotCount)}</Text>
         </View>
     )
 }

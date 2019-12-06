@@ -63,6 +63,14 @@ export default (props) => {
         }
       })
     }
+
+    goChatBotExample01 = () => {
+      Navigation.push(props.componentId, {
+        component: {
+          name:'chatBotExampleScreen01'
+        }
+      })
+    }
     
     return(
         <View style={{flex:1}}>
@@ -93,6 +101,10 @@ export default (props) => {
           <Button
             title="go Test"
             onPress={() => goTest()}
+          />
+          <Button
+            title="go chatbot example01"
+            onPress={() => goChatBotExample01()}
           />
         </View>
     )

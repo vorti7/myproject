@@ -148,7 +148,7 @@ export default () => {
 
     return(
         <View style={{flex:1}}>
-            <Animated.View style={{height:listHeight, backgroundColor:'green'}}>
+            <Animated.View style={{height:listHeight}}>
                 <FlatList
                     ref = {flatListRef}
                     data={chatList}
@@ -160,10 +160,14 @@ export default () => {
                                     />
                                 }
                     ListFooterComponent = {() => {
-                        let chatPosition = chatList.length%2 == 1 ? 'flex-end' : 'flex-start' 
-                        let chatColor = chatList.length%2 == 1 ? 'blue' : 'red'
+                        // let chatPosition = chatList.length%2 == 1 ? 'flex-end' : 'flex-start' 
+                        // let chatColor = chatList.length%2 == 1 ? 'blue' : 'red'
                         return (
-                            <View style={{width:'100%', padding:5, alignItems:chatPosition}}>
+                            <View style={{
+                                width:'100%',
+                                padding:5,
+                                // alignItems:chatPosition
+                            }}>
                                 {/* <View style={{minHeight:40, minWidth:60, padding:10, backgroundColor:chatColor, borderRadius:5, justifyContent:'center'}}>
                                     <LoadingChat/>
                                 </View> */}
@@ -175,7 +179,7 @@ export default () => {
                     keyExtractor = {(item, index) => index.toString()}
                 />
             </Animated.View>
-            <Animated.View style={{height:bottomHeight, backgroundColor:'yellow'}}>
+            <Animated.View style={{height:bottomHeight, borderTopWidth:5, borderColor:'black', backgroundColor:'yellow'}}>
                 <InputContainer
                     changeInputBoxHeight = {(index) => changeInputBoxHeight(index)}
                     data = {qList[question]}
@@ -192,27 +196,21 @@ function AChat(props){
     chatPosition = ''
     chatTouchable = true
     if (props.data.type=='q' || props.data.type == 'loadingQ'){
-        chatColor = 'red'
+        // chatColor = 'red'
+        chatColor = '#6ca2e6'
         chatPosition = 'flex-start'
     }else if(props.data.type == 'a' || props.data.type == 'loadingA'){
-        chatColor = 'blue'
+        // chatColor = 'blue'
+        chatColor = "#6cd4e6"
         chatPosition = 'flex-end'
         chatTouchable = false
     }
 
     const [animValue] = useState(new Animated.Value(0))
-    // useEffect(() => {
-    //     Animated.timing(
-    //         animValue,
-    //         {
-    //             toValue: 1,
-    //             duration: 1000,
-    //         }
-    //     ).start();
-    // }, [])
+    
     useEffect(() => {
         if(props.data.type=='q' || props.data.type=='a'){
-            console.log(props.data.type)
+            // console.log(props.data.type,'---------------')
             Animated.timing(
                 animValue,
                 {
@@ -221,12 +219,13 @@ function AChat(props){
                 }
             ).start();
         } else if(props.data.type=='loadingQ' || props.data.type=='loadingA'){
-            console.log(props.data.type)
+            // console.log(props.data.type,'---------------')
             Animated.timing(
                 animValue,
                 {
                     toValue: 0.5,
-                    duration: 1000,
+                    duration: 500,
+                    delay:1000
                 }
             ).start();
         }
@@ -241,9 +240,13 @@ function AChat(props){
         inputRange: [0, 0.5, 1],
         outputRange: [0, 10, 20]
     })
-    const chatSize = animValue.interpolate({
+    // const chatSize = animValue.interpolate({
+    //     inputRange: [0, 0.5, 1],
+    //     outputRange: [0, 100, 200]
+    // })
+    const chatOpacity = animValue.interpolate({
         inputRange: [0, 0.5, 1],
-        outputRange: [0, 100, 200]
+        outputRange: [0, 1, 2]
     })
     if(props.data.type == 'q' || props.data.type == 'a'){
         return(
@@ -251,8 +254,11 @@ function AChat(props){
                 <View
                     style={{width:'100%', padding:5, alignItems:chatPosition}}
                 >
+                    {/* <View style={{backgroundColor:'green', width:50, height:50}}>
+
+                    </View> */}
                     <Animated.View style={{
-                        opacity: animValue,
+                        // opacity: animValue,
                         // left: animValue
                         minHeight:40,
                         // minWidth: chatWidth,
@@ -260,6 +266,8 @@ function AChat(props){
                         maxWidth:'70%',
                         padding:10,
                         backgroundColor:chatColor,
+                        borderColor:chatColor,
+                        borderWidth:5,
                         borderRadius:5,
                         justifyContent:'center'
                     }}>
@@ -279,7 +287,17 @@ function AChat(props){
             <View
                     style={{width:'100%', padding:5, alignItems:chatPosition}}
             >
-                <Animated.View style={{width: chatSize, maxHeight: chatSize, padding:10, backgroundColor:chatColor, borderRadius:5, justifyContent:'center'}}>
+                <Animated.View style={{
+                    // width: chatSize,
+                    // maxHeight: chatSize,
+                    opacity:chatOpacity,
+                    padding:10,
+                    borderColor:chatColor,
+                    backgroundColor:chatColor,
+                    borderWidth:5,
+                    borderRadius:5,
+                    justifyContent:'center'
+                }}>
                     <LoadingChat/>
                 </Animated.View>
             </View>
@@ -305,19 +323,37 @@ function InputContainer(props){
             return (
                 <View style={{flexDirection:'row'}}>
                     <TextInput
-                        style = {{flex:5, fontSize:20}}
+                        style = {{flex:5, fontSize:20, backgroundColor:'red', padding:'1%'}}
                         onChangeText = {inputText => setInputText(inputText)}
                         value = {inputText}
                     />
                     <View style={{flex:1, justifyContent:'center', paddingLeft:'1%'}}>
-                        <Button
+                        {/* <Button
+                            color = 'white'
                             title="INPUT"
                             onPress={() => {
                                 props.answerInput({answer: inputText, nextQuestion: props.data.nextQuestion})
                                 setInputText('')
                                 props.changeInputBoxHeight(0)
                             }}
-                        />
+                        /> */}
+                        <TouchableOpacity
+                            style={{
+                                flex:1,
+                                padding:0,
+                                backgroundColor:'green',
+                                alignItems:'center',
+                                justifyContent:'center',
+                                padding:'1%'
+                            }}
+                            onPress={() => {
+                                props.answerInput({answer: inputText, nextQuestion: props.data.nextQuestion})
+                                setInputText('')
+                                props.changeInputBoxHeight(0)
+                            }}
+                        >
+                            <Text numberOfLines={1}>Input</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )
@@ -358,15 +394,15 @@ function InputContainer(props){
         }
     }
     return(
-    <View style={{width:'100%', borderColor:'black', bodrderWidth:1}}>
+    <View style={{width:'100%', borderColor:'black', bodrderWidth:0.5}}>
         <View
-            style={{width:'100%', padding:'1%'}}
+            style={{width:'100%', backgroundColor:'blue'}}
         >
             {inputBox()}
         </View>
-        <View
-            style={{height:Platform.OS === 'ios' ? '2%' : 0}}
-        />
+        {/* <View
+            style={{backgroundColor:'green', height:Platform.OS === 'ios' ? '5%' : 0}}
+        /> */}
     </View>
     )
 }

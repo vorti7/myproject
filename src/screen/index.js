@@ -9,6 +9,8 @@ import DateTimePicker from './datetimePicker'
 import Test from './test'
 import LoadingChat from './loadingChat'
 
+import ChatBotExample01 from './chatBotExample01'
+
 // import ApolloClient from 'apollo-boost'
 // import { ApolloProvider } from '@apollo/react-hooks';
 
@@ -34,5 +36,7 @@ export default Screen = {
         Navigation.registerComponent('dateTimePickerScreen', () => DateTimePicker)
         Navigation.registerComponent('loadingChatScreen', () => LoadingChat)
         Navigation.registerComponent('testScreen', () => Test)
+
+        Navigation.registerComponent('chatBotExampleScreen01', () => ChatBotExample01)
     }
 }
