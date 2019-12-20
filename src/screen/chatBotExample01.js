@@ -4,16 +4,16 @@ import React, { useState,
     useRef
 } from 'react';
 import {
-Platform,
-View,
-Button,
-FlatList,
-Text,
-TextInput,
-Picker,
-TouchableOpacity,
-Alert,
-Animated
+    Platform,
+    View,
+    Button,
+    FlatList,
+    Text,
+    TextInput,
+    Picker,
+    TouchableOpacity,
+    Alert,
+    Animated
 } from 'react-native';
 
 import LoadingChat from './loadingChat'
@@ -211,11 +211,11 @@ function AChat(props){
     useEffect(() => {
         if(props.data.type=='q' || props.data.type=='a'){
             // console.log(props.data.type,'---------------')
-            Animated.timing(
+            Animated.spring(
                 animValue,
                 {
                     toValue: 1,
-                    duration: 1000,
+                    duration: 300,
                 }
             ).start();
         } else if(props.data.type=='loadingQ' || props.data.type=='loadingA'){
@@ -248,6 +248,12 @@ function AChat(props){
         inputRange: [0, 0.5, 1],
         outputRange: [0, 1, 2]
     })
+
+    // const chatWidth = animValue.interpolate({
+    //     inputRange: [ 0, 0.5, 1],
+    //     outputRange: ['0%', '25%', '50%']
+    // })
+
     if(props.data.type == 'q' || props.data.type == 'a'){
         return(
             <View>
@@ -264,6 +270,7 @@ function AChat(props){
                         // minWidth: chatWidth,
                         minWidth: 60,
                         maxWidth:'70%',
+                        // maxWidth:chatWidth,
                         padding:10,
                         backgroundColor:chatColor,
                         borderColor:chatColor,
@@ -276,7 +283,9 @@ function AChat(props){
                             onPress = {() => props.fixAnswer()}
                         >
                             {/* <Text style={{color:'white'}}>{props.data.chat}</Text> */}
-                            <Animated.Text style = {{fontSize:chatText}}>{props.data.chat}</Animated.Text>
+                            <Animated.Text style = {{
+                                fontSize:chatText,
+                                }}>{props.data.chat}</Animated.Text>
                         </TouchableOpacity>
                     </Animated.View>
                 </View>

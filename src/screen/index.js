@@ -9,6 +9,7 @@ import DateTimePicker from './datetimePicker'
 import Test from './test'
 import LoadingChat from './loadingChat'
 
+import ChatBotExample00 from './chatBotExample00'
 import ChatBotExample01 from './chatBotExample01'
 
 // import ApolloClient from 'apollo-boost'
@@ -37,6 +38,7 @@ export default Screen = {
         Navigation.registerComponent('loadingChatScreen', () => LoadingChat)
         Navigation.registerComponent('testScreen', () => Test)
 
+        Navigation.registerComponent('chatBotExampleScreen00', () => ChatBotExample00)
         Navigation.registerComponent('chatBotExampleScreen01', () => ChatBotExample01)
     }
 }
